@@ -2,15 +2,16 @@ import requests
 import time
 from itertools import chain
 from pprint import pprint
+import json
 from urllib.parse import urlencode
 
-vk_token = '8dfad35a5c780653d8e65afa9d81922323e9c794b852fbcc527f407782439d0aa37cfb1aa709a30c73a13'
+vk_token = 'c10c735708047753e2d4fe35dd2f597424f99cead6bf3a2ba499eb5c64fc66161c694be0f21c69f476f45'
 
 # OAUTH_URL = 'https://oauth.vk.com/authorize'
 # OAUTH_PARAMs = {
 #     'client_id': 7491008,
 #     'display': 'page',
-#     'scope': 'friends,video,status',
+#     'scope': 'friends,groups',
 #     'response_type': 'token',
 #     'v': 5.107
 # }
@@ -75,8 +76,10 @@ class User:
                 'fields': 'members_count, id, name',
                 },
             )
-        return response.json()['response']
+        return response.json()
 
 
-start = User('171691064', vk_token)
-pprint(start.get_group_by_id())
+with open('groups.json', 'w', encoding='utf-8') as file:
+    start = User('171691064', vk_token)
+    js = start.get_group_by_id()['response']
+    json.dump(js, file, ensure_ascii=False, indent=2)
